@@ -69,6 +69,16 @@ public class Main {
         return customers;
     }
 
+    @GetMapping("api/v1/customers/{customerId}")
+    public Customer getCustomer(@PathVariable("customerId") Integer customerId) {
+        Customer customer =  customers.stream()
+                .filter(c -> c.id.equals(customerId))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("customer with id [%s] not found".formatted(customerId)));
+
+        return customer;
+    }
+
     static class Customer{
         private Integer id;
         private String name;
