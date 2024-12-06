@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Objects;
+
 
 
 /*
@@ -37,8 +39,42 @@ public class Main {
     public CheckResponse check(){
         return new CheckResponse("Application started...");
     }
-
+    /*
     record CheckResponse(String check){
     }
+    */
+    class CheckResponse {
+        private final String check;
+
+        public CheckResponse(String check) {
+            this.check = check;
+        }
+
+        public String getCheck() {
+            return check;
+        }
+
+        @Override
+        public String toString() {
+            return "CheckResponse{" +
+                    "check='" + check + '\'' +
+                    '}';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            CheckResponse that = (CheckResponse) o;
+            return Objects.equals(check, that.check);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(check);
+        }
+    }
+
+
+
 
 }
