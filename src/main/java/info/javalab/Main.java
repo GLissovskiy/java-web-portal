@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Objects;
 
 
@@ -37,12 +38,26 @@ public class Main {
     }
     @GetMapping("/check")
     public CheckResponse check(){
-        return new CheckResponse("Application started...");
+         CheckResponse response = new CheckResponse(
+                "Application started...",
+                List.of("Golang", "Java", "Javascript"),
+                new Person("Korben", 30, 30_000)
+        );
+         return response;
     }
+
+    record Person(String name, int age , double amount){}
+
+    record CheckResponse(
+            String check,
+            List<String> languages,
+            Person person){
+    }
+
     /*
-    record CheckResponse(String check){
-    }
-    */
+
+    // jackson make conversion java classes to JSON objects
+    record CheckResponse(String check){} // equals to the next class:
     class CheckResponse {
         private final String check;
 
@@ -73,7 +88,7 @@ public class Main {
             return Objects.hashCode(check);
         }
     }
-
+    */
 
 
 
