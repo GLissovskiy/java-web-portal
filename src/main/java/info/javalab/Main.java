@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,9 +38,12 @@ public class Main {
 
     }
     @GetMapping("/check")
-    public CheckResponse check(){
+    public CheckResponse check(
+            @RequestParam(value = "name", required = false) String appName){
+
+        String appMessage = appName == null || appName.isBlank() ? "Application started..." : appName + " application started...";
          CheckResponse response = new CheckResponse(
-                "Application started...",
+                 appMessage,
                 List.of("Golang", "Java", "Javascript"),
                 new Person("Korben", 30, 30_000)
         );
