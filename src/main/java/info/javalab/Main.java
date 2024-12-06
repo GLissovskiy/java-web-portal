@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,12 +34,35 @@ import java.util.Objects;
 @RestController
 
 public class Main {
+
+    // db
+    private static List<Customer> customers;
+
+    static {
+        customers = new ArrayList<>();
+        Customer korben = new Customer(
+                1,
+                "Korben",
+                "korben@mail.com",
+                33
+        );
+        customers.add(korben);
+        Customer dallas = new Customer(
+                2,
+                "Dallas",
+                "dallas@mail.com",
+                32
+        );
+        customers.add(dallas);
+    }
+
     public static void main(String[] args){
+        System.out.println(customers);
         SpringApplication.run(Main.class, args);
 
     }
 
-    class Customer{
+    static class Customer{
         private Integer id;
         private String name;
         private String email;
