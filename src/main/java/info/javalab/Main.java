@@ -3,6 +3,7 @@ package info.javalab;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 
 /*
 * @SpringBootApplication equals to next 3 annotations:
@@ -18,22 +19,30 @@ import org.springframework.context.ConfigurableApplicationContext;
 * */
 
 @SpringBootApplication
-
 public class Main {
-
 
 
     public static void main(String[] args){
         //System.out.println(customers);
         ConfigurableApplicationContext applicationContext = SpringApplication.run(Main.class, args);
+        printBeans(applicationContext);
 
-        String[] beanDefinitionNames = applicationContext.getBeanDefinitionNames();
+    }
+
+    @Bean("fooo")
+    public Foo getFoo(){
+        return new Foo("bar");
+    }
+    record Foo(String name){}
+
+    private static void printBeans(ConfigurableApplicationContext ctx) {
+
+        String[] beanDefinitionNames = ctx.getBeanDefinitionNames();
 
         for (String beanDefinitionName : beanDefinitionNames) {
             System.out.println(beanDefinitionName);
 
         }
-
     }
 
 }
