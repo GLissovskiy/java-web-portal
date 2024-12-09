@@ -17,9 +17,19 @@ public class Customer{
             generator = "customer_id_seq"
     )
     private Integer id;
+    @Column(
+            nullable = false
+    )
     private String name;
+    @Column(
+            nullable = false
+    )
     private String email;
+    @Column(
+            nullable = true
+    )
     private Integer age;
+
 
     public Customer(){}
 
