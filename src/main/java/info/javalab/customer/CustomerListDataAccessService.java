@@ -55,7 +55,10 @@ public class CustomerListDataAccessService implements CustomerDao{
 
     @Override
     public void deleteCustomer(Integer id) {
-
+        customers.stream()
+                .filter(c -> c.getId().equals(id))
+                .findFirst()
+                .ifPresent(customers::remove);
     }
 
     @Override
