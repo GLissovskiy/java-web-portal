@@ -1,6 +1,7 @@
 package info.javalab.customer;
 
 import info.javalab.exception.DuplicateResourceException;
+import info.javalab.exception.RequestValidationException;
 import info.javalab.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -40,6 +41,40 @@ public class CustomerService {
                 customerRegistrationRequest.age()
         );
         customerDao.insertCustomer(customer);
+    }
+
+    public void updateCustomer(Integer customerId, CustomerUpdateRequest customerUpdateRequest ){
+
+        Customer customer = getCustomer(customerId);
+
+        boolean changed = false;
+
+        if (customerUpdateRequest.name() != null && !customerUpdateRequest.name().equals(customer.getName())){
+            customer.setName(customerUpdateRequest.name());
+            changed = true;
+        }
+
+        if (customerUpdateRequest.age() != null && !customerUpdateRequest.age().equals(customer.getAge())){
+            customer.setAge(customerUpdateRequest.age());
+            changed = true;
+        }
+
+        if (customerUpdateRequest.email() != null && !customerUpdateRequest.email().equals(customer.getEmail())){
+
+            if (customerDao.existsCustomerByEmail(customerUpdateRequest.email())){
+                throw new DuplicateResourceException("customer with email [%s] exists".formatted(customerUpdateRequest.email()));
+            }
+
+            customer.setEmail(customerUpdateRequest.email());
+            changed = true;
+        }
+
+        if (!changed){
+            throw new RequestValidationException("no data changes found");
+        }
+
+        customerDao.updateCustomer(customer);
+
     }
 
 

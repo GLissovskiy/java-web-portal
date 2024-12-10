@@ -43,6 +43,12 @@ public class CustomerController {
         customerService.deleteCustomer(customerId);
     }
 
+    @PutMapping("api/v1/customers/{customerId}")
+    public void updateCustomer(@PathVariable("customerId") Integer customerId
+            , @RequestBody CustomerUpdateRequest request) {
+        customerService.updateCustomer(customerId ,request);
+    }
+
     @GetMapping("/check")
     public CheckResponse check(
             @RequestParam(value = "name", required = false) String appName){
