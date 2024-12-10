@@ -1,6 +1,6 @@
 package info.javalab.customer;
 
-import com.sun.jdi.request.DuplicateRequestException;
+import info.javalab.exception.DuplicateResourceException;
 import info.javalab.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -31,7 +31,7 @@ public class CustomerService {
 
         String email = customerRegistrationRequest.email();
         if (customerDao.existsCustomerByEmail(email)){
-            throw new DuplicateRequestException("customer with email [%s] exists".formatted(email));
+            throw new DuplicateResourceException("customer with email [%s] exists".formatted(email));
         }
 
         Customer customer = new Customer(
