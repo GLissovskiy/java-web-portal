@@ -1,9 +1,6 @@
 package info.javalab.customer;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -13,6 +10,7 @@ import java.util.List;
  * @ResponseBody
  * */
 @RestController
+//@RequestMapping("api/v1/customers")
 public class CustomerController {
 
     private final CustomerService customerService;
@@ -35,6 +33,10 @@ public class CustomerController {
         return customerService.getCustomer(customerId);
     }
 
+    @PostMapping("api/v1/customers")
+    public void registerCustomer(@RequestBody CustomerRegistrationRequest request) {
+        customerService.addCustomer(request);
+    }
 
     @GetMapping("/check")
     public CheckResponse check(
