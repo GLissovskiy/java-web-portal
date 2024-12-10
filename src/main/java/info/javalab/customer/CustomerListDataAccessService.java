@@ -49,7 +49,22 @@ public class CustomerListDataAccessService implements CustomerDao{
     }
 
     @Override
+    public void updateCustomer(Customer customer) {
+
+    }
+
+    @Override
+    public void deleteCustomer(Integer id) {
+
+    }
+
+    @Override
     public boolean existsCustomerByEmail(String email) {
         return customers.stream().anyMatch(c -> c.getEmail().equals(email));
+    }
+
+    @Override
+    public boolean existsCustomerById(Integer id) {
+        return customers.stream().anyMatch(c -> c.getId().equals(id));
     }
 }

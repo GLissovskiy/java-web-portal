@@ -38,6 +38,11 @@ public class CustomerController {
         customerService.addCustomer(request);
     }
 
+    @DeleteMapping("api/v1/customers/{customerId}")
+    public void deleteCustomer(@PathVariable("customerId") Integer customerId) {
+        customerService.deleteCustomer(customerId);
+    }
+
     @GetMapping("/check")
     public CheckResponse check(
             @RequestParam(value = "name", required = false) String appName){
