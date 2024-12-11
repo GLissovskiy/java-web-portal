@@ -49,7 +49,7 @@ public class Main {
             );
 
             List<Customer> customers = List.of(korben, dallas);
-            customerRepository.saveAll(customers);
+            //customerRepository.saveAll(customers);
         };
     }
 
