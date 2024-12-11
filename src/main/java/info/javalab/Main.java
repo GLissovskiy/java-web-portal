@@ -1,5 +1,6 @@
 package info.javalab;
 
+import com.github.javafaker.Faker;
 import info.javalab.customer.Customer;
 import info.javalab.customer.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
@@ -9,6 +10,7 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.util.List;
+import java.util.Random;
 
 /*
 * @SpringBootApplication equals to next 3 annotations:
@@ -37,19 +39,14 @@ public class Main {
     @Bean
     CommandLineRunner runner(CustomerRepository customerRepository) {
         return args -> {
-            Customer korben = new Customer(
-                    "Korben",
-                    "korben@mail.com",
-                    33
+            var faker = new Faker();
+            Random random = new Random();
+            Customer customer = new Customer(
+                    faker.name().fullName(),
+                    faker.internet().safeEmailAddress(),
+                    random.nextInt(16,99)
             );
-            Customer dallas = new Customer(
-                    "Dallas",
-                    "dallas@mail.com",
-                    32
-            );
-
-            List<Customer> customers = List.of(korben, dallas);
-            //customerRepository.saveAll(customers);
+            customerRepository.save(customer);
         };
     }
 
