@@ -67,20 +67,69 @@ public class CustomerJDBCDataAccessService implements CustomerDao{
     @Override
     public void updateCustomer(Customer customer) {
 
+        if (customer.getName() != null) {
+            var sql = """
+                    UPDATE customer
+                    SET name = ?
+                    WHERE id = ?
+                    """;
+            int result = jdbcTemplate.update(sql, customer.getName(), customer.getId());
+            System.out.println("jdbcTemplate.update (UpdateName) = " + result);
+        }
+
+        if (customer.getEmail() != null) {
+            var sql = """
+                    UPDATE customer
+                    SET email = ?
+                    WHERE id = ?
+                    """;
+            int result = jdbcTemplate.update(sql, customer.getEmail(), customer.getId());
+            System.out.println("jdbcTemplate.update (UpdateEmail) = " + result);
+        }
+        if (customer.getAge() != null) {
+            var sql = """
+                    UPDATE customer
+                    SET age = ?
+                    WHERE id = ?
+                    """;
+            int result = jdbcTemplate.update(sql, customer.getAge(), customer.getId());
+            System.out.println("jdbcTemplate.update (UpdateAge) = " + result);
+        }
     }
 
     @Override
     public void deleteCustomer(Integer id) {
-
+        var sql = """
+                DELETE FROM customer WHERE id = ?
+                """;
+        int result = jdbcTemplate.update(sql, id);
+        System.out.println("j dbcTemplate.update (deleteCustomerById) = " + result);
     }
 
     @Override
     public boolean existsCustomerByEmail(String email) {
-        return false;
+
+        var sql = """
+                SELECT count(id)
+                FROM customer
+                WHERE email = ?;
+                """;
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+
+        return count != null && count >0;
     }
 
     @Override
     public boolean existsCustomerById(Integer id) {
-        return false;
+
+        var sql = """
+                SELECT count(id)
+                FROM customer
+                WHERE id = ?;
+                """;
+
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, id);
+        return count != null && count >0;
     }
 }
