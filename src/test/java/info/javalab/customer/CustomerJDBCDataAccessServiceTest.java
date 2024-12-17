@@ -1,12 +1,13 @@
 package info.javalab.customer;
 
+import info.javalab.AbstractTestcontainersUnitTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.core.JdbcTemplate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class CustomerJDBCDataAccessServiceTest {
+class CustomerJDBCDataAccessServiceTest extends AbstractTestcontainersUnitTest {
 
     private CustomerJDBCDataAccessService underTest;
     private CustomerRowMapper customerRowMapper = new CustomerRowMapper();
@@ -14,12 +15,10 @@ class CustomerJDBCDataAccessServiceTest {
     @BeforeEach
     void setUp() {
         underTest = new CustomerJDBCDataAccessService(
-                new JdbcTemplate(),
+                getJdbcTemplate(),
                 customerRowMapper
 
         );
-
-
 
     }
 
