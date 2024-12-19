@@ -1,5 +1,6 @@
 package info.javalab.customer;
 
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -7,6 +8,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -38,6 +41,18 @@ class CustomerServiceTest {
 
     @Test
     void getCustomer() {
+
+        int customerId = 100;
+        Customer customer = new Customer(
+                customerId, "Korben", "korben@test.com", 22
+        );
+        Mockito.when(customerDao
+                        .selectCustomerById(customerId))
+                        .thenReturn(Optional.of(customer));
+
+        Customer actual = underTest.getCustomer(customerId);
+
+        Assertions.assertThat(actual).isEqualTo(customer);
     }
 
     @Test
