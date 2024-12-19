@@ -40,25 +40,76 @@ class CustomerJPADataAccessServiceTest {
 
     @Test
     void selectCustomerById() {
+        // Given
+
+        int id = 1;
+        // When
+        underTest.selectCustomerById(id);
+
+        // Then
+        Mockito.verify(customerRepository)
+                .findById(id);
     }
 
     @Test
     void insertCustomer() {
+
+        // Given
+        Customer customer = new Customer(
+                1 , "Korben", "korben@example.xom", 22
+        );
+        // When
+        underTest.insertCustomer(customer);
+        // Then
+        Mockito.verify(customerRepository).save(customer);
     }
 
     @Test
     void updateCustomer() {
+
+        // Given
+        Customer customer = new Customer(
+                1 , "Korben", "korben@example.xom", 22
+        );
+        // When
+        underTest.updateCustomer(customer);
+        // Then
+        Mockito.verify(customerRepository).save(customer);
     }
 
     @Test
     void deleteCustomer() {
+
+        // Given
+        int id = 1;
+        // When
+        underTest.deleteCustomer(id);
+        // Then
+        Mockito.verify(customerRepository).deleteById(id);
     }
 
     @Test
     void existsCustomerByEmail() {
+
+        // Given
+        String email = "korben@example.xom";
+        // When
+
+        underTest.existsCustomerByEmail(email);
+
+        // Then
+        Mockito.verify(customerRepository)
+                .existsCustomerByEmail(email);
     }
 
     @Test
     void existsCustomerById() {
+
+        // Given
+        int id = 1;
+        // When
+        underTest.existsCustomerById(id);
+        // Then
+        Mockito.verify(customerRepository).existsCustomerById(id);
     }
 }
