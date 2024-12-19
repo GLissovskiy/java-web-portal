@@ -1,5 +1,6 @@
 package info.javalab.customer;
 
+import info.javalab.exception.ResourceNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(MockitoExtension.class) // replace @AfterEach annotation and tearDown method
@@ -53,6 +55,21 @@ class CustomerServiceTest {
         Customer actual = underTest.getCustomer(customerId);
 
         Assertions.assertThat(actual).isEqualTo(customer);
+    }
+
+    @Test
+    void willThrowWhenGetCustomerReturnsEmptyOptional() {
+
+        int customerId = 100;
+
+        Mockito.when(customerDao
+                        .selectCustomerById(customerId))
+                .thenReturn(Optional.empty());
+
+        // Then
+        assertThatThrownBy(() -> underTest.getCustomer(customerId))
+                .isInstanceOf(ResourceNotFoundException.class)
+                .hasMessageContaining("customer with id [%s] not found".formatted(customerId));
     }
 
     @Test
