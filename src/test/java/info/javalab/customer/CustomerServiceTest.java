@@ -6,12 +6,14 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -74,6 +76,32 @@ class CustomerServiceTest {
 
     @Test
     void addCustomer() {
+
+        String email = "korben@test.com";
+
+
+        Mockito.when(customerDao.existsCustomerByEmail(email))
+                .thenReturn(Boolean.FALSE);
+
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(
+                "Korben"
+                , email
+                , 22
+        );
+
+        underTest.addCustomer(request);
+
+        ArgumentCaptor<Customer> customerCaptor = ArgumentCaptor.forClass(Customer.class);
+
+        Mockito.verify(customerDao).insertCustomer(customerCaptor.capture());
+
+        Customer capturedCustomer =  customerCaptor.getValue();
+
+        assertThat(capturedCustomer.getId()).isNull();
+        assertThat(capturedCustomer.getName()).isEqualTo(request.name());
+        assertThat(capturedCustomer.getEmail()).isEqualTo(request.email());
+        assertThat(capturedCustomer.getAge()).isEqualTo(request.age());
+
     }
 
     @Test
