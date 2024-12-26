@@ -1,5 +1,6 @@
 package info.javalab.customer;
 
+import info.javalab.exception.DuplicateResourceException;
 import info.javalab.exception.ResourceNotFoundException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
@@ -102,6 +103,32 @@ class CustomerServiceTest {
         assertThat(capturedCustomer.getEmail()).isEqualTo(request.email());
         assertThat(capturedCustomer.getAge()).isEqualTo(request.age());
 
+    }
+
+
+
+    @Test
+    void willThrowWhenEmailExistsWhileAddCustomer() {
+
+        String email = "korben@test.com";
+
+
+        Mockito.when(customerDao.existsCustomerByEmail(email))
+                .thenReturn(Boolean.TRUE);
+
+        CustomerRegistrationRequest request = new CustomerRegistrationRequest(
+                "Korben"
+                , email
+                , 22
+        );
+
+        //underTest.addCustomer(request);
+
+        assertThatThrownBy(() -> underTest.addCustomer(request))
+                .isInstanceOf(DuplicateResourceException.class)
+                .hasMessage("customer with email [%s] exists".formatted(email));
+
+        Mockito.verify(customerDao, Mockito.never()).insertCustomer(Mockito.any());
     }
 
     @Test
